@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#E86B8F">
+<meta name="description" content="Oshi Life（推しライフ）は、ライブや発売日の予定、チケット・グッズの支出、思い出メモまで、推し活のすべてを一冊にまとめて管理できるiPhoneアプリです。">
+<meta name="apple-itunes-app" content="app-id=6780718555">
+<meta property="og:title" content="Oshi Life｜推し活の予定・支出・グッズをまとめて管理">
+<meta property="og:description" content="「いつ・どこで・いくら使った？」推し活のすべてをこの一冊に。ライブも発売日も支払期限も、もう見逃さない。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/3a/81/24/3a81247f-9f42-a0de-8ee5-14caf707a4ec/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/1200x630wa.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>Oshi Life｜推し活の予定・支出・グッズをまとめて管理</title>
+<link rel="preconnect" href="https://is1-ssl.mzstatic.com">
+<link rel="icon" href="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/3a/81/24/3a81247f-9f42-a0de-8ee5-14caf707a4ec/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/100x100bb.jpg">
+<style>
+  :root {
+    --ink: #271F2F;
+    --text: #473B52;
+    --muted: #716579;
+    --line: rgba(39, 31, 47, .10);
+    --rose: #E86B8F;
+    --rose-light: #F07C9B;
+    --plum: #8E7AE6;
+    --deep-plum: #6E55A8;
+    --paper: #FBF6F8;
+    --panel: #FFFFFF;
+    --soft: #FFF7FA;
+    --grad: linear-gradient(135deg, #F07C9B 0%, #E86B8F 45%, #8E7AE6 100%);
+    --shadow-sm: 0 6px 18px rgba(54, 37, 70, .08);
+    --shadow-md: 0 18px 44px rgba(54, 37, 70, .14);
+    --shadow-lg: 0 34px 80px rgba(54, 37, 70, .22);
+    --radius: 20px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--paper);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  .wrap { width: min(1120px, 100% - 40px); margin-inline: auto; }
+
+  .grad-text {
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 1rem;
+    padding: 14px 26px; border-radius: 999px;
+    border: none; cursor: pointer; transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    white-space: nowrap;
+  }
+  .btn:focus-visible { outline: 3px solid rgba(142, 122, 230, .55); outline-offset: 3px; }
+  .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 12px 28px rgba(232, 107, 143, .38); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 36px rgba(232, 107, 143, .46); }
+  .btn-ghost { background: #fff; color: var(--ink); box-shadow: var(--shadow-sm); }
+  .btn-ghost:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .btn-light { background: rgba(255,255,255,.16); color: #fff; backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.4); }
+  .btn-light:hover { background: rgba(255,255,255,.26); transform: translateY(-2px); }
+  .btn svg { width: 20px; height: 20px; }
+
+  /* ---------- Nav ---------- */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: saturate(160%) blur(14px);
+    background: rgba(251, 246, 248, .82);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 66px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; font-size: 1.08rem; letter-spacing: .2px; }
+  .brand img { width: 34px; height: 34px; border-radius: 9px; box-shadow: var(--shadow-sm); }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a.link { color: var(--muted); font-weight: 600; font-size: .94rem; }
+  .nav-links a.link:hover { color: var(--ink); }
+  .nav .btn { padding: 10px 20px; font-size: .92rem; }
+  @media (max-width: 720px) { .nav-links .link { display: none; } }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; padding: clamp(48px, 8vw, 96px) 0 clamp(56px, 8vw, 104px); overflow: hidden; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5; z-index: 0; pointer-events: none; }
+  .blob.b1 { width: 460px; height: 460px; background: #F7A8C0; top: -160px; right: -120px; }
+  .blob.b2 { width: 420px; height: 420px; background: #B9A6F2; bottom: -200px; left: -140px; opacity: .42; }
+  .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  @media (max-width: 880px) { .hero-grid { grid-template-columns: 1fr; text-align: center; } }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-weight: 700; font-size: .82rem; letter-spacing: .04em;
+    color: var(--deep-plum); background: rgba(142, 122, 230, .13);
+    padding: 7px 15px; border-radius: 999px; margin-bottom: 22px;
+  }
+  .hero h1 { font-size: clamp(2.1rem, 5.4vw, 3.5rem); line-height: 1.22; margin: 0 0 18px; letter-spacing: -.01em; font-weight: 800; }
+  .hero p.lead { font-size: clamp(1.02rem, 2.3vw, 1.22rem); color: var(--text); margin: 0 0 30px; max-width: 30em; }
+  @media (max-width: 880px) { .hero p.lead { margin-inline: auto; } }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 14px; }
+  @media (max-width: 880px) { .cta-row { justify-content: center; } }
+  .cta-note { margin-top: 16px; font-size: .86rem; color: var(--muted); }
+
+  /* phone frame */
+  .phone {
+    position: relative; width: clamp(230px, 78%, 312px); margin-inline: auto;
+    aspect-ratio: 312 / 660; background: #15101b; border-radius: 42px; padding: 11px;
+    box-shadow: var(--shadow-lg); transform: rotate(-2.2deg);
+  }
+  .hero-phone { transition: transform .4s ease; }
+  .hero-phone:hover { transform: rotate(0deg) translateY(-4px); }
+  .phone::before { content: ""; position: absolute; top: 15px; left: 50%; transform: translateX(-50%); width: 38%; height: 22px; background: #15101b; border-radius: 0 0 14px 14px; z-index: 2; }
+  .phone img { width: 100%; height: 100%; object-fit: cover; border-radius: 32px; background: var(--soft); }
+
+  /* ---------- Section shell ---------- */
+  section.block { padding: clamp(54px, 8vw, 92px) 0; }
+  .sec-head { text-align: center; max-width: 40em; margin: 0 auto clamp(36px, 5vw, 56px); }
+  .sec-head .kicker { font-weight: 800; letter-spacing: .08em; font-size: .8rem; color: var(--rose); text-transform: uppercase; }
+  .sec-head h2 { font-size: clamp(1.6rem, 4vw, 2.4rem); margin: 12px 0 14px; line-height: 1.3; font-weight: 800; letter-spacing: -.01em; }
+  .sec-head p { color: var(--text); margin: 0; font-size: 1.05rem; }
+
+  /* ---------- Feature grid ---------- */
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 880px) { .features { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .features { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 26px 24px; box-shadow: var(--shadow-sm); transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .ic { width: 50px; height: 50px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 16px; color: #fff; }
+  .ic svg { width: 26px; height: 26px; }
+  .card h3 { margin: 0 0 8px; font-size: 1.16rem; font-weight: 800; }
+  .card p { margin: 0; color: var(--text); font-size: .97rem; }
+
+  /* ---------- Screenshots ---------- */
+  .shots-section { background: linear-gradient(180deg, #FFF7FA 0%, #FBF6F8 100%); }
+  .shots { display: flex; gap: clamp(16px, 3vw, 30px); overflow-x: auto; padding: 8px 4px 24px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .shots::-webkit-scrollbar { height: 8px; }
+  .shots::-webkit-scrollbar-thumb { background: rgba(142,122,230,.3); border-radius: 999px; }
+  .shot { scroll-snap-align: center; flex: 0 0 auto; width: clamp(186px, 44vw, 230px); text-align: center; }
+  .shot .phone { transform: none; width: 100%; }
+  .shot figcaption { margin-top: 16px; font-weight: 700; font-size: .96rem; }
+  .shot figcaption span { display: block; font-weight: 500; font-size: .84rem; color: var(--muted); margin-top: 2px; }
+
+  /* ---------- Premium ---------- */
+  .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: stretch; }
+  @media (max-width: 760px) { .plans { grid-template-columns: 1fr; } }
+  .plan { background: var(--panel); border: 1px solid var(--line); border-radius: 22px; padding: 30px 28px; box-shadow: var(--shadow-sm); }
+  .plan.pro { position: relative; background: var(--grad); color: #fff; border: none; box-shadow: var(--shadow-md); }
+  .plan h3 { margin: 0 0 4px; font-size: 1.3rem; font-weight: 800; }
+  .plan .price { font-size: .95rem; color: var(--muted); margin-bottom: 18px; }
+  .plan.pro .price { color: rgba(255,255,255,.9); }
+  .plan ul { list-style: none; margin: 0 0 24px; padding: 0; display: grid; gap: 12px; }
+  .plan li { display: flex; gap: 11px; align-items: flex-start; font-size: .97rem; }
+  .plan li svg { width: 20px; height: 20px; flex: 0 0 20px; margin-top: 3px; }
+  .plan.free li svg { color: var(--rose); }
+  .badge-pop { position: absolute; top: 20px; right: 22px; background: rgba(255,255,255,.22); border: 1px solid rgba(255,255,255,.5); font-size: .76rem; font-weight: 800; padding: 5px 12px; border-radius: 999px; }
+  .fineprint { margin-top: 26px; font-size: .82rem; color: var(--muted); max-width: 56em; }
+
+  /* ---------- FAQ ---------- */
+  .faq { max-width: 760px; margin-inline: auto; display: grid; gap: 14px; }
+  details.qa { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 4px 22px; box-shadow: var(--shadow-sm); }
+  details.qa summary { cursor: pointer; list-style: none; padding: 16px 0; font-weight: 700; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  details.qa summary::-webkit-details-marker { display: none; }
+  details.qa summary .chev { transition: transform .2s ease; flex: 0 0 auto; color: var(--plum); }
+  details.qa[open] summary .chev { transform: rotate(180deg); }
+  details.qa p { margin: 0 0 18px; color: var(--text); font-size: .97rem; }
+
+  /* ---------- Final CTA ---------- */
+  .cta-band { position: relative; overflow: hidden; background: var(--grad); color: #fff; border-radius: 28px; padding: clamp(40px, 6vw, 64px); text-align: center; box-shadow: var(--shadow-md); }
+  .cta-band h2 { font-size: clamp(1.6rem, 4vw, 2.3rem); margin: 0 0 12px; font-weight: 800; }
+  .cta-band p { margin: 0 0 26px; opacity: .94; font-size: 1.05rem; }
+  .cta-band .deco { position: absolute; border-radius: 50%; background: rgba(255,255,255,.14); }
+  .cta-band .d1 { width: 200px; height: 200px; top: -70px; left: -50px; }
+  .cta-band .d2 { width: 150px; height: 150px; bottom: -60px; right: -30px; }
+
+  /* ---------- Footer ---------- */
+  footer.ft { padding: 52px 0 40px; border-top: 1px solid var(--line); margin-top: 18px; }
+  .ft-inner { display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+  .ft-links { display: flex; flex-wrap: wrap; gap: 22px; }
+  .ft-links a { color: var(--muted); font-weight: 600; font-size: .92rem; }
+  .ft-links a:hover { color: var(--ink); }
+  .ft .brand { font-size: 1rem; }
+  .ft small { display: block; color: var(--muted); margin-top: 22px; font-size: .82rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { scroll-behavior: auto !important; transition: none !important; }
+    .phone, .hero-phone { transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Nav ===== -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/3a/81/24/3a81247f-9f42-a0de-8ee5-14caf707a4ec/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/200x200bb.jpg" alt="Oshi Life アイコン">
+      <span>Oshi Life</span>
+    </a>
+    <nav class="nav-links">
+      <a class="link" href="#features">機能</a>
+      <a class="link" href="#screens">画面</a>
+      <a class="link" href="#premium">料金</a>
+      <a class="link" href="#faq">FAQ</a>
+      <a class="btn btn-primary" href="https://apps.apple.com/jp/app/oshi-life/id6780718555">入手する</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="top">
+  <span class="blob b1"></span>
+  <span class="blob b2"></span>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">🌸 推し活マネージャー for iPhone</span>
+      <h1>推し活、ぜんぶ<br><span class="grad-text">この一冊</span>に。</h1>
+      <p class="lead">ライブや発売日の予定、チケット・グッズの支出、思い出メモまで。「いつ・どこで・いくら使った？」を、Oshi Life ひとつでまとめて記録できます。</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://apps.apple.com/jp/app/oshi-life/id6780718555" aria-label="App Store で Oshi Life を入手">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 1.43c.08 1-.32 1.98-.93 2.69-.65.74-1.7 1.32-2.72 1.24-.1-.98.36-2 .94-2.66.65-.74 1.78-1.3 2.71-1.27zM19.7 17.2c-.5 1.16-.74 1.68-1.39 2.7-.9 1.43-2.18 3.2-3.76 3.22-1.4.02-1.76-.92-3.66-.91-1.9.01-2.29.93-3.7.9-1.58-.03-2.79-1.63-3.7-3.05-2.53-3.99-2.8-8.66-1.24-11.15 1.1-1.76 2.85-2.79 4.49-2.79 1.67 0 2.72.92 4.1.92 1.34 0 2.16-.92 4.09-.92 1.46 0 3.01.8 4.11 2.18-3.61 1.98-3.02 7.14.36 8.9z"/></svg>
+          App Store で入手
+        </a>
+        <a class="btn btn-ghost" href="#features">機能を見る</a>
+      </div>
+      <p class="cta-note">無料ではじめられます・ログインは任意・iOS 17 以降に対応</p>
+    </div>
+    <div class="phone hero-phone">
+      <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/d0/88/35/d08835bd-569e-2538-d605-c5c9acfba878/01_home.png/600x1300bb.webp" alt="Oshi Life のホーム画面。今日の予定や次のイベントまでの日数が表示されている" width="600" height="1300" loading="eager">
+    </div>
+  </div>
+</section>
+
+<!-- ===== Features ===== -->
+<section class="block" id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Features</div>
+      <h2>推し活に必要な機能を、ぜんぶ。</h2>
+      <p>複数のSNSやメモアプリ、家計簿アプリを行き来する必要はもうありません。</p>
+    </div>
+    <div class="features">
+      <article class="card">
+        <div class="ic" style="background: var(--grad)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10z"/></svg>
+        </div>
+        <h3>推しを登録して整理</h3>
+        <p>アイドル・アーティスト・声優・VTuber・俳優・アニメ・ゲームなど、ジャンルごとに推しを登録。自由入力カテゴリにも対応します。</p>
+      </article>
+      <article class="card">
+        <div class="ic" style="background: linear-gradient(135deg,#E86B8F,#C264C0)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>
+        </div>
+        <h3>予定をカレンダーで一望</h3>
+        <p>ライブ・発売・配信・抽選・当落発表・支払期限など、推し活ならではのイベント種別に対応。次の予定までのカウントダウンも表示します。</p>
+      </article>
+      <article class="card">
+        <div class="ic" style="background: linear-gradient(135deg,#9B7DE0,#7B79E0)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        </div>
+        <h3>通知で大事な瞬間を逃さない</h3>
+        <p>各予定に「10分前・1時間前・1日前・3日前・7日前」の通知を設定可能。当落発表や申込締切、支払期限もしっかりリマインド。</p>
+      </article>
+      <article class="card">
+        <div class="ic" style="background: linear-gradient(135deg,#F07C9B,#EE8B6B)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5h14a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 7.5 5 4.5h11M16.5 13.5h2.5"/></svg>
+        </div>
+        <h3>支出をかんたん記録</h3>
+        <p>チケット・グッズ・交通費・宿泊・サブスク・飲食などのカテゴリで記録。「推しにいくら使ったか」が見える化され、予算管理に役立ちます。</p>
+      </article>
+      <article class="card">
+        <div class="ic" style="background: linear-gradient(135deg,#DA5E9C,#8E7AE6)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7.5h12l-1 12.5H7zM9 7.5a3 3 0 0 1 6 0"/></svg>
+        </div>
+        <h3>グッズと思い出を残す</h3>
+        <p>集めたグッズや、ライブ・イベントの感想メモを記録。共有設定にしたレポートは、ほかのユーザーのタイムラインにも表示できます。</p>
+      </article>
+      <article class="card">
+        <div class="ic" style="background: linear-gradient(135deg,#54BFA6,#7B79E0)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9h14v-9"/><path d="M10 19v-5h4v5"/></svg>
+        </div>
+        <h3>ホーム画面でひと目で把握</h3>
+        <p>今日の予定・今後の通知・開催中のイベント・次の予定までの日数をまとめて表示。ウィジェットにも対応しています。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Screenshots ===== -->
+<section class="block shots-section" id="screens">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Screens</div>
+      <h2>シンプルで、かわいい。</h2>
+      <p>毎日ひらきたくなる、推し色に染まるインターフェース。</p>
+    </div>
+    <div class="shots">
+      <figure class="shot">
+        <div class="phone"><img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/d0/88/35/d08835bd-569e-2538-d605-c5c9acfba878/01_home.png/600x1300bb.webp" alt="ホーム画面" width="600" height="1300" loading="lazy"></div>
+        <figcaption>ホーム<span>今やるべき推し活がわかる</span></figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="phone"><img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/95/c0/bc/95c0bcee-68b8-af94-2d8d-ce635a23580e/02_calendar.png/600x1300bb.webp" alt="カレンダー画面" width="600" height="1300" loading="lazy"></div>
+        <figcaption>カレンダー<span>予定をまとめて一望</span></figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="phone"><img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/1d/d1/27/1dd1276b-0822-7e05-c2cd-33b393c7af7a/03_expenses.png/600x1300bb.webp" alt="支出管理画面" width="600" height="1300" loading="lazy"></div>
+        <figcaption>支出<span>推しにいくら使ったか</span></figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="phone"><img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/0a/a5/40/0aa5402c-baee-c9f0-a89c-84bae3b48649/04_oshi.png/600x1300bb.webp" alt="推し一覧画面" width="600" height="1300" loading="lazy"></div>
+        <figcaption>推し<span>ジャンルごとに整理</span></figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="phone"><img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/47/52/9d/47529d01-dc2e-7622-9c50-ca44629aaf70/05_report.png/600x1300bb.webp" alt="振り返りレポート画面" width="600" height="1300" loading="lazy"></div>
+        <figcaption>レポート<span>1年の推し活を振り返る</span></figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="phone"><img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/81/2f/ef/812fef3b-60ed-a91c-1dc0-4e5938372045/06_notifications.png/600x1300bb.webp" alt="通知設定画面" width="600" height="1300" loading="lazy"></div>
+        <figcaption>通知<span>大事な瞬間を逃さない</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Premium ===== -->
+<section class="block" id="premium">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Pricing</div>
+      <h2>無料で、しっかり使える。</h2>
+      <p>主要機能は無料のまま。もっと自由に楽しみたくなったら Premium へ。</p>
+    </div>
+    <div class="plans">
+      <div class="plan free">
+        <h3>Free</h3>
+        <div class="price">¥0 ・ ずっと無料</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>推しを3人まで登録</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>予定30件・支出50件・レポート50件</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>カレンダー・通知・記録の主要機能</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>ログインなしですぐに開始</li>
+        </ul>
+      </div>
+      <div class="plan pro">
+        <span class="badge-pop">おすすめ</span>
+        <h3>Premium</h3>
+        <div class="price">月額／年額・いつでも解約可能</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>推し・予定・支出・レポートが無制限</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>推し写真をクラウドにバックアップ</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>振り返りレポートをフル活用</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>アプリ内の広告をすべて非表示</li>
+        </ul>
+        <a class="btn btn-light" href="https://apps.apple.com/jp/app/oshi-life/id6780718555">アプリで詳しく見る</a>
+      </div>
+    </div>
+    <p class="fineprint">
+      Premium はサブスクリプションです。お支払いは Apple ID アカウントに請求され、期間終了の24時間前までに自動更新をオフにしない限り自動的に更新されます。購入後は設定の Apple ID アカウントページからいつでも管理・解約できます。価格は App Store の表示をご確認ください。
+    </p>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="block" id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">FAQ</div>
+      <h2>よくある質問</h2>
+    </div>
+    <div class="faq">
+      <details class="qa">
+        <summary>ログインしないと使えませんか？<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></summary>
+        <p>いいえ。ログインなしでもすぐに使い始められます。Apple または Google アカウントで連携すれば、機種変更や再インストール後も同じデータを引き継げます。</p>
+      </details>
+      <details class="qa">
+        <summary>機種変更しても記録は残りますか？<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></summary>
+        <p>アカウント連携をしておけば、新しい端末でも同じアカウントでサインインするだけでデータを引き継げます。推し写真のクラウドバックアップは Premium 限定の機能です。</p>
+      </details>
+      <details class="qa">
+        <summary>解約・アカウント削除はどう違いますか？<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></summary>
+        <p>サブスクリプションの解約は App Store のサブスクリプション管理から行います。アカウント削除はアプリ内データの削除で、サブスクリプションは自動では解約されません。それぞれ別の操作としてアプリ内に用意しています。</p>
+      </details>
+      <details class="qa">
+        <summary>対応端末を教えてください<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></summary>
+        <p>iOS 17 以降の iPhone に対応しています。ホーム画面ウィジェットにも対応しています。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Final CTA ===== -->
+<section class="block" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta-band">
+      <span class="deco d1"></span>
+      <span class="deco d2"></span>
+      <h2>今日から、推しとの毎日を記録しよう。</h2>
+      <p>推し活をもっと楽しく、もっと身軽に。</p>
+      <a class="btn btn-light" href="https://apps.apple.com/jp/app/oshi-life/id6780718555" style="font-size:1.05rem; padding:16px 30px;">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 1.43c.08 1-.32 1.98-.93 2.69-.65.74-1.7 1.32-2.72 1.24-.1-.98.36-2 .94-2.66.65-.74 1.78-1.3 2.71-1.27zM19.7 17.2c-.5 1.16-.74 1.68-1.39 2.7-.9 1.43-2.18 3.2-3.76 3.22-1.4.02-1.76-.92-3.66-.91-1.9.01-2.29.93-3.7.9-1.58-.03-2.79-1.63-3.7-3.05-2.53-3.99-2.8-8.66-1.24-11.15 1.1-1.76 2.85-2.79 4.49-2.79 1.67 0 2.72.92 4.1.92 1.34 0 2.16-.92 4.09-.92 1.46 0 3.01.8 4.11 2.18-3.61 1.98-3.02 7.14.36 8.9z"/></svg>
+        App Store で入手
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer class="ft">
+  <div class="wrap ft-inner">
+    <a class="brand" href="#top">
+      <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/3a/81/24/3a81247f-9f42-a0de-8ee5-14caf707a4ec/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/100x100bb.jpg" alt="Oshi Life アイコン" style="width:30px;height:30px;border-radius:8px;">
+      <span>Oshi Life</span>
+    </a>
+    <nav class="ft-links">
+      <a href="https://apps.apple.com/jp/app/oshi-life/id6780718555">App Store</a>
+      <a href="terms.html">利用規約</a>
+      <a href="privacy.html">プライバシーポリシー</a>
+      <a href="https://forms.gle/GTZoGiHJLudqfbcp8">お問い合わせ</a>
+    </nav>
+  </div>
+  <div class="wrap"><small>© 2026 Oshi Life. App Store は Apple Inc. の商標です。</small></div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Oshi Life",
+  "operatingSystem": "iOS 17.0+",
+  "applicationCategory": "LifestyleApplication",
+  "description": "推し活の予定・支出・グッズ・思い出をまとめて管理できるiPhoneアプリ。",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+  "url": "https://apps.apple.com/jp/app/oshi-life/id6780718555"
+}
+</script>
+</body>
+</html>
